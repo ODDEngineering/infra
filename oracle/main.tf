@@ -157,3 +157,41 @@ resource "oci_containerengine_node_pool" "k8s_node_pool" {
     value = "k8s-cluster"
   }
 }
+
+resource "oci_containerengine_node_pool" "k8s_node_pool_amd" {
+  name           = "k8s-node-pool_amd"
+  compartment_id = var.compartment_id
+  cluster_id     = oci_containerengine_cluster.k8s_cluster.id
+
+  kubernetes_version = "v1.27.2"
+  node_config_details {
+    placement_configs {
+      availability_domain = data.oci_identity_availability_domains.ads.availability_domains[0].name
+      subnet_id           = oci_core_subnet.vcn_private_subnet.id
+    }
+    placement_configs {
+      availability_domain = data.oci_identity_availability_domains.ads.availability_domains[1].name
+      subnet_id           = oci_core_subnet.vcn_private_subnet.id
+    }
+    placement_configs {
+      availability_domain = data.oci_identity_availability_domains.ads.availability_domains[2].name
+      subnet_id           = oci_core_subnet.vcn_private_subnet.id
+    }
+    size = 3
+  }
+  node_shape = "VM.Standard.E4.Flex"
+  node_shape_config {
+    memory_in_gbs = 8
+    ocpus         = 2
+  }
+  node_source_details {
+    # Oracle-Linux-8.8-2023.06.30-0-OKE-1.27.2-632
+    # us-ashburn-1
+    image_id    = "ocid1.image.oc1.iad.aaaaaaaa3rgjrdua52mfm5lcv2zzdtw6qztesmclyrgd5p4ft57reqsjmmzq"
+    source_type = "image"
+  }
+  initial_node_labels {
+    key   = "name"
+    value = "k8s-cluster"
+  }
+}
