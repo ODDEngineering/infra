@@ -7,12 +7,12 @@ variable "user_ocid" {
 }
 
 variable "private_key" {
-  type = string
+  type        = string
   description = "The private SSH key for API Key Auth"
 }
 
 variable "fingerprint" {
-  type = string
+  type        = string
   description = "The SSH Key fingerprint"
 }
 
