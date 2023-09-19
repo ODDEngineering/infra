@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: website
+  labels:
+    app: website
+  annotations:
+    oci.oraclecloud.com/load-balancer-type: "nlb"
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 3000
+  selector:
+    app: website
