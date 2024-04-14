@@ -2,7 +2,7 @@ terraform {
   required_providers {
     oci = {
       source  = "oracle/oci"
-      version = "5.12.0"
+      version = "5.36.0"
     }
   }
 }
@@ -17,7 +17,7 @@ provider "oci" {
 
 module "vcn" {
   source  = "oracle-terraform-modules/vcn/oci"
-  version = "3.5.4"
+  version = "3.6.0"
 
   vcn_name      = "k8s-vcn"
   vcn_dns_label = "k8svcn"
@@ -102,7 +102,7 @@ resource "oci_containerengine_cluster" "k8s_cluster" {
   compartment_id = var.compartment_id
   vcn_id         = module.vcn.vcn_id
 
-  kubernetes_version = "v1.27.2"
+  kubernetes_version = "v1.29.1"
   endpoint_config {
     is_public_ip_enabled = true
     subnet_id            = oci_core_subnet.vcn_public_subnet.id
@@ -125,7 +125,7 @@ resource "oci_containerengine_node_pool" "k8s_node_pool" {
   compartment_id = var.compartment_id
   cluster_id     = oci_containerengine_cluster.k8s_cluster.id
 
-  kubernetes_version = "v1.27.2"
+  kubernetes_version = "v1.29.1"
   node_config_details {
     placement_configs {
       availability_domain = data.oci_identity_availability_domains.ads.availability_domains[0].name
@@ -147,9 +147,9 @@ resource "oci_containerengine_node_pool" "k8s_node_pool" {
     ocpus         = 2
   }
   node_source_details {
-    # Oracle-Linux-8.8-aarch64-2023.06.30-0-OKE-1.27.2-632
+    # Oracle-Linux-8.9-aarch64-2024.01.26-0-OKE-1.29.1-679
     # us-ashburn-1
-    image_id    = "ocid1.image.oc1.iad.aaaaaaaa42jq6dt4nwjs74uxcibmfxxtmos4ct2yvgcmwwifxmtpemc4doka"
+    image_id    = "ocid1.image.oc1.iad.aaaaaaaal4ozph2wkorbutsrstg744f3xa6tccuiuug5oprrmk34onvbafaa"
     source_type = "image"
   }
   initial_node_labels {
